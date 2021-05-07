@@ -23,7 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/home", "/signup", "/css/**", "/js/**").permitAll()
+                .antMatchers("/home", "/signup", "/css/**", "/js/**")
+                .permitAll()
+                .antMatchers("/product/add").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/product", "/message", "/post")
+                .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated();
 
         http.formLogin()
@@ -32,13 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(encoder());
+    protected void configure(AuthenticationManagerBuilder auth)
+            throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(encoder());
     }
 
     @Bean
     public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(13);
     }
 
     @Override
@@ -47,7 +53,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/h2-console/**");
     }
-
-
-
 }

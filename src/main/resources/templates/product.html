@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en"
       xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
@@ -11,7 +10,6 @@
 <body>
 
 <div class="container">
-
     <h1 class="display-4">Product</h1>
 
     <div sec:authorize="hasRole('ROLE_ADMIN')">
@@ -32,8 +30,6 @@
         </tr>
         </tbody>
     </table>
-
 </div>
-
 </body>
 </html>
